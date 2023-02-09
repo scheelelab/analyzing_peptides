@@ -1,0 +1,9 @@
+Download the following files:
+	ARC Brain 1.mzid.gz
+        ARC BRAIN 2.mzid.gz
+        CORTEX neurons ACN.mzid.gz
+        CTX BRAIN 1.mzid.gz
+        POMC NEURON GuHCL.mzid.gz
+        PVN BRAIN 1.mzid.gz
+        PVN BRAIN 2.mzid.gz
+from: https://www.ebi.ac.uk/pride/archive/projects/PXD008795

@@ -1,0 +1,10 @@
+Download the following files from:
+	Data 1M.mzid
+        Data 1P.mzid
+        Data 2M.mzid
+        Data 2P.mzid
+        Data 3M.mzid
+        Data 3P.mzid
+        Data 4M.mzid
+        Data 4P.mzid
+from: https://www.ebi.ac.uk/pride/archive/projects/PXD003533
