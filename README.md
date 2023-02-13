@@ -1,14 +1,14 @@
 # analyzing_peptides
 
-This repository contains scripts that should be used in conjunction with the MultiPep stand-alone program [GitHub link](https://github.com/scheelelab/MultiPep).
-We here show a pipeline for using MultiPep predictions conjoined with protein information from UniProt to identify interesting peptides with certain bioactivities from peptidomics data. As an example, we here compare a brain peptidomics dataset with a plasma peptidomics dataset. 
+This repository contains scripts that should be used in conjunction with the MultiPep stand-alone program ([GitHub link](https://github.com/scheelelab/MultiPep)).
+We here show a pipeline for using MultiPep predictions conjoined with protein information from UniProt to identify interesting peptides with certain bioactivities from peptidomics data. As an example, we here compare a brain peptidomics dataset with a plasma peptidomics dataset and seek to find neurpeptides and peptide hormones. 
 
-
+### About the repository
 The repository contains two executable scripts:
-1.	`getting_peptides.py`: retrieves and cleans the peptides from the mzID files, readies them for MultiPep predicting and print them to TXT files (see Note 1).
+1.	`getting_peptides.py`: retrieves and cleans the peptides from the mzID files, readies them for MultiPep predicting and print them to TXT files.
 2.	`process_predictions.py`: handles MultiPep predicted peptides, adds additional filtering, downloads UniProt protein information and writes output Excel tables and plots distributions of bioactive peptides found in the applied datasets.
 
-The `getting_peptides.py` script utilize a list of known contaminants (“contaminants.fasta”) from [MaxQuant](http://www.coxdocs.org/doku.php?id=maxquant:start_downloads.htm) downloaded 05/04/2022 to remove contaminants. The `process_peptides.py` script uses the MultiPep training data available in a pickle file (`total_classes_seq32.pkl`), to clean the data.
+The `getting_peptides.py` script utilize a list of known contaminants (“contaminants.fasta”) from [MaxQuant](http://www.coxdocs.org/doku.php?id=maxquant:start_downloads.htm) downloaded 05/04/2022 to remove contaminants. The `process_peptides.py` script uses the MultiPep training data available in a pickle file (`total_classes_seq32.pkl`) to clean the data.
 
 ### Retrieving peptides from mzID files
 To retrieve peptides from mzID files, one can use the following command:
@@ -33,6 +33,7 @@ For the brain peptide list:
 
 For the plasma peptide list:
 -	`python MultiPep_predict_xtra_output.py -input_file plasma_PXD003533.txt -output_file plasma_PXD003533.csv`
+
 For the intersection list:
 -	`python MultiPep_predict_xtra_output.py -input_file brain_PXD008795__plasma_PXD003533.txt -output_file brain_PXD008795__plasma_PXD003533.csv`
 
