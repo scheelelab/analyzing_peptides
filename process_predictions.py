@@ -2,8 +2,7 @@
 import pandas as pd
 import numpy as np
 import seaborn as sns
-sns.set_theme(style="whitegrid")
-sns.set(font_scale=2)
+sns.set_theme(style="darkgrid", font_scale=2)
 from matplotlib import pyplot as plt
 import pickle
 import argparse
@@ -12,13 +11,16 @@ from protein_data_and_functions import get_uniprot_data, prep_info_for_mapper, m
 parser = argparse.ArgumentParser()
 parser.add_argument("-input_unique", type=str, nargs='+', required=True)
 parser.add_argument("-input_inter", type=str, nargs='+', required=True)
-parser.add_argument("-multipep_seqs", type=str, required=True)
+parser.add_argument("-multipep_seqs", type=str, required=False, default=None)
 args = parser.parse_args()
 
 
 # total_classes_seq32.pkl file from the MultiPep repository: https://github.com/scheelelab/MultiPep
-with open(args.multipep_seqs,"rb") as f:
-    mlpep_tr_data = pickle.load(f)
+if type(args.multipep_seqs) == str:
+    with open(args.multipep_seqs,"rb") as f:
+        mlpep_tr_data = pickle.load(f)
+else:
+    mlpep_tr_data = {}
 
 protein_data = "protein_data/"
 protein_data_pickle = "protein_data/pickle/"
@@ -95,9 +97,6 @@ def covert_to_df(dct, cols, names, remove=0):
 def plot_predictions(dct, cols, names, thrs, dct_pno, remove=0, extra_name = False, color = False):
 
     fig, axes = plt.subplots(1, len(thrs), figsize=(40, 10), sharey=True)
-    #fig.suptitle("Percentages of predicted peptides using different thresholds", fontsize=45, y=1.05)
-    sns.set_theme(style="whitegrid")
-    sns.set(font_scale=2)
     ln_plots = len(thrs) - 1
     for j,i in enumerate(thrs):
         tmp = {}
@@ -135,7 +134,7 @@ def plot_predictions(dct, cols, names, thrs, dct_pno, remove=0, extra_name = Fal
             to_red = [cols_tmp.index(clas) for clas in np.array(cols_tmp)[_tmp == False]]
             for clas in to_red:
                 axes[j].get_xticklabels()[clas].set_color("red")
-            axes[j].get_yaxis().set_visible(False)
+            axes[j].set(ylabel=None)
 
         axes[j].set_title("Prediction scores > {}".format(i), fontsize="x-large")
 
