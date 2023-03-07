@@ -12,6 +12,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-input_unique", type=str, nargs='+', required=True)
 parser.add_argument("-input_inter", type=str, nargs='+', required=True)
 parser.add_argument("-multipep_seqs", type=str, required=False, default=None)
+parser.add_argument("-toxic", type=str, nargs='+', required=False, default=['hemolytic', 'toxic'], choices=['hemolytic', 'toxic', "None"])
 args = parser.parse_args()
 
 
@@ -148,7 +149,8 @@ def plot_predictions(dct, cols, names, thrs, dct_pno, remove=0, extra_name = Fal
 
 
 # remove peptide classified as toxic or hemolytic:
-tox = ['hemolytic', 'toxic']
+#tox = ['hemolytic', 'toxic']
+tox = args.toxic
 
 # the classes that should be analyzed further:
 bio = ['neuropeptide', 'peptidehormone']
@@ -178,8 +180,11 @@ def make_small_table(out_dfs, lst, toxic, relevant, pep_map, th = 0.5, one_match
     for k,v in out_dfs.items():
 
         # removing toxic peptides
-        tmp_tox = np.sum(v[toxic].values <= 0.5, axis=-1) > 0
-        tmp_df = v[tmp_tox][lst]
+        if "None" in toxic:
+            tmp_df = v[lst]
+        else:
+            tmp_tox = np.sum(v[toxic].values <= 0.5, axis=-1) == len(toxic)
+            tmp_df = v[tmp_tox][lst]
 
         # getting sorted peptides with prediction above 'th'
         tmp_val = tmp_df.values
