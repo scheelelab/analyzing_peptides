@@ -2,7 +2,7 @@
 import pandas as pd
 import numpy as np
 import seaborn as sns
-sns.set_theme(style="darkgrid", font_scale=2)
+sns.set_theme(style="darkgrid", font_scale=5)
 from matplotlib import pyplot as plt
 import pickle
 import argparse
@@ -30,7 +30,7 @@ mulp_files = args.input_unique
 mulp_files_inter = args.input_inter
 
 
-thrs = [0.5, 0.7, 0.9]
+thrs = [0.5, 0.9]
 
 # A function that removes peptides already in the MultiPep training data
 def remove_train_data(df, train_data):
@@ -89,17 +89,21 @@ def retrieve_data(mulp_files, thrs):
 
 def covert_to_df(dct, cols, names, remove=0):
     df = pd.DataFrame(dct)
-    df["Bioactivity classes"] = cols
+    clss = cols.copy()
+    clss[-8] = 'cytokines/growthf.'
+    clss[-1] = 'dipeptidyl pept. inh.'
+    df["Bioactivity classes"] = clss
     bool_ = np.sum(df[names].values,axis=-1) > remove
     return df, bool_
     
 
 # A very hard-coded plotting function
 def plot_predictions(dct, cols, names, thrs, dct_pno, remove=0, extra_name = False, color = False):
-
-    fig, axes = plt.subplots(1, len(thrs), figsize=(40, 10), sharey=True)
-    ln_plots = len(thrs) - 1
+    
+    fig, axes = plt.subplots(1, 2, figsize=(40, 20), sharey=True)
     for j,i in enumerate(thrs):
+        
+
         tmp = {}
         for ii in names:
             tmp[ii] = dct[ii][i]
@@ -128,7 +132,8 @@ def plot_predictions(dct, cols, names, thrs, dct_pno, remove=0, extra_name = Fal
             rotation=45, 
             horizontalalignment='right',
             )
-        
+            
+
         if i != 0.5:
             cols_tmp = list(np.array(cols)[b])
             _tmp = _[b]
@@ -143,8 +148,10 @@ def plot_predictions(dct, cols, names, thrs, dct_pno, remove=0, extra_name = Fal
         for t, l in zip(leg.texts, legend_names):
             t.set_text(l)
         leg.set_title("")
+    fig.tight_layout()
+    plt.subplots_adjust(wspace=0.1)
 
-    plt.savefig("_".join(names)+".tiff", bbox_inches='tight')
+    plt.savefig("_".join(names)+".tif", bbox_inches='tight', dpi=350)
 
 
 
@@ -279,6 +286,7 @@ def get_top_x(df, clmns, X, st_st):
 
     return df1
     
+
 
 
 if __name__ == "__main__":
